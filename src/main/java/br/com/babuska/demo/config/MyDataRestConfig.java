@@ -1,7 +1,9 @@
 package br.com.babuska.demo.config;
 
+import br.com.babuska.demo.model.Country;
 import br.com.babuska.demo.model.Product;
 import br.com.babuska.demo.model.ProductCategory;
+import br.com.babuska.demo.model.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +30,21 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] unsupportedActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
+        Class<?>[] classes = {Product.class, ProductCategory.class, Country.class, State.class};
 
         // Enable readonly actions and methods with CORS for each entity class.
-        for (Class<?> entityClass : new Class[]{Product.class, ProductCategory.class}) {
-            config.getExposureConfiguration()
-                    .forDomainType(entityClass)
-                    .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedActions))
-                    .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedActions));
+        for (Class<?> entityClass : classes) {
+            disableHttpMethods(config, entityClass, unsupportedActions);
         }
 
         exposeIds(config);
+    }
+
+    private static void disableHttpMethods(RepositoryRestConfiguration config, Class<?> entityClass, HttpMethod[] unsupportedActions) {
+        config.getExposureConfiguration()
+                .forDomainType(entityClass)
+                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedActions))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedActions));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
