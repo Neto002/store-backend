@@ -7,6 +7,7 @@ import br.com.babuska.demo.model.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -22,6 +23,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     private final EntityManager entityManager;
 
+    @Value("${allowed.origins}")
+    private String[] allowedOrigins;
+
     @Autowired
     public MyDataRestConfig(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -29,8 +33,10 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        HttpMethod[] unsupportedActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
+        HttpMethod[] unsupportedActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH};
         Class<?>[] classes = {Product.class, ProductCategory.class, Country.class, State.class};
+
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(allowedOrigins);
 
         // Enable readonly actions and methods with CORS for each entity class.
         for (Class<?> entityClass : classes) {
