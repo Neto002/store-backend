@@ -24,17 +24,16 @@ jobs:
         with:
           ref: main
 
-#      - name: Set up JDK
-#        uses: actions/setup-java@v2
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-#      - name: Build with Maven
-#        run: mvn clean install -DskipTests
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
 
 #      - name: Build and push Docker images
-#        working-directory: site
 #        run: |
 #          docker-compose up -d
 
@@ -46,7 +45,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            cd /root/site/store-backend
-            git pull
-            mvn clean install -DskipTests
-            docker-compose up -d
+            scp -r $GITHUB_WORKSPACE ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_HOST}}:/root/site
+#            git pull
+#            docker-compose up -d
