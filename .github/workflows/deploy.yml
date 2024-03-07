@@ -45,6 +45,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            scp -r $GITHUB_WORKSPACE ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_HOST}}:/root/site
+            scp -r ${{github.workspace}} ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_HOST}}:/root/site
 #            git pull
 #            docker-compose up -d
