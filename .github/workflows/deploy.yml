@@ -8,31 +8,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
+      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+      OKTA_ISSUER: ${{ secrets.OKTA_ISSUER }}
+      STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           ref: main
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21'
-          distribution: 'temurin'
+#      - name: Set up JDK
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
 
-      - name: Set application properties secrets
-        run: echo "Setting application properties secrets"
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
-          OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-          OKTA_ISSUER: ${{ secrets.OKTA_ISSUER }}
-          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
+#      - name: Build with Maven
+#        run: mvn clean install -DskipTests
 
 #      - name: Build and push Docker images
 #        working-directory: site
@@ -47,6 +46,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            cd ${{ github.workspace }}
+            cd /root/site
             git pull
+            mvn clean install -DskipTests
             docker-compose up -d
