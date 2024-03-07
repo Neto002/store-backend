@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: /root/site
+          path: site
           ref: main
 
       - name: Set up JDK
@@ -47,6 +47,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            cd /root/site/store-backend
+            cd ${{ github.workspace }}/store-backend
             git pull
             docker-compose up -d
