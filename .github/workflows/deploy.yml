@@ -43,13 +43,12 @@ jobs:
 
       - name: SSH into the server and deploy
         uses: appleboy/ssh-action@master
-        working-directory: site
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            cd ${{ github.workspace }}/store-backend
+            cd ${{ github.workspace }}
             git pull
             docker-compose up -d
