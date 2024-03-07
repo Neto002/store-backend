@@ -24,11 +24,11 @@ jobs:
         with:
           ref: main
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21'
-          distribution: 'temurin'
+#      - name: Set up JDK
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
 
 #      - name: Build with Maven
 #        run: mvn clean install -DskipTests
