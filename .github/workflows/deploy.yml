@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: /root/site/store-backend
+          path: /root/site
           ref: main
 
       - name: Set up JDK
