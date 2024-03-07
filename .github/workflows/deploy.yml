@@ -33,6 +33,7 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
       - name: Build with Maven
+        working-directory: site
         run: mvn clean install -DskipTests
 
       - name: Build and push Docker images
