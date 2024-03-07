@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
-            cd /root/site
+            cd /root/site/store-backend
             git pull
             mvn clean install -DskipTests
             docker-compose up -d
