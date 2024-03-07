@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          path: /root/site/store-backend
+          ref: main
 
       - name: Set up JDK
         uses: actions/setup-java@v2
