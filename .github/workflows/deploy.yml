@@ -9,18 +9,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      DB_URL: ${{ secrets.DB_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
-      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-      OKTA_ISSUER: ${{ secrets.OKTA_ISSUER }}
-      STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
+          OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+          OKTA_ISSUER: ${{ secrets.OKTA_ISSUER }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
         with:
           ref: main
 
@@ -58,3 +57,4 @@ jobs:
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/store-backend:${{ github.run_id }}
+            docker run ${{ secrets.DOCKER_USERNAME }}/store-backend:${{ github.run_id }}
