@@ -32,10 +32,12 @@ jobs:
 
       - name: Build Docker images
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/store-backend .
+          docker compose build
 
       - name: Push to Docker Hub Container Registry
         run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/store-backend:latest ${{ secrets.DOCKER_USERNAME }}/store-backend:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/store-backend:${{ github.run_id }}
           docker push ${{ secrets.DOCKER_USERNAME }}/store-backend:latest
 
   deploy:
