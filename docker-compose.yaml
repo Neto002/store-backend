@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   backend:
-    image: ${{ secrets.DOCKER_USERNAME }}/store-backend
+    image: neto002/store-backend
     build:
       context: .
       dockerfile: Dockerfile
