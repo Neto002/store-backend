@@ -52,6 +52,7 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/store-backend:latest
             docker rm -f store-backend
+            docker images | grep '${{ secrets.DOCKER_USERNAME }}/store-backend' | awk '{print $3}' | xargs docker rmi
             docker run -d -p 8080:8080 \
             -e DB_URL="${{ secrets.DB_URL }}" \
             -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
