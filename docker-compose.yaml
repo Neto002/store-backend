@@ -3,6 +3,7 @@ version: '3.7'
 services:
   backend:
     image: neto002/store-backend
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
